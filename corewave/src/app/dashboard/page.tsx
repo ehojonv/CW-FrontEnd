@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { AlertTriangle, MapPin, TrendingUp, Bell, Activity, FileX, Loader2, Eye, EyeOff } from 'lucide-react';
+import { AlertTriangle, MapPin, TrendingUp, Activity, FileX, Loader2, Eye, EyeOff } from 'lucide-react';
 import Header from '../../components/Header';
 import ProtectedRoute from '../../components/ProtectedRoute';
 
@@ -234,7 +234,7 @@ const fixEncoding = (text) => {
     createEvento(eventData);
   };
 
-  const StatCard = ({ icon: Icon, title, value, color, trend }) => (
+  const StatCard = ({ icon: Icon, title, value, color }) => (
     <div className="bg-white rounded-xl p-4 sm:p-6 shadow-lg hover:shadow-xl transition-shadow">
       <div className="flex items-center justify-between">
         <div className="min-w-0 flex-1">
