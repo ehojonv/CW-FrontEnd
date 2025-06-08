@@ -26,7 +26,7 @@ function DashboardContent() {
 const fixEncoding = (text: any) => {
   if (!text || typeof text !== 'string') return text;
   
-  const encodingMap = {
+  const encodingMap: { [key: string]: string } = {
     'Ã¡': 'á', 'Ã ': 'à', 'Ã¢': 'â', 'Ã£': 'ã', 'Ã¤': 'ä',
     'Ã©': 'é', 'Ã¨': 'è', 'Ãª': 'ê', 'Ã«': 'ë',
     'Ã­': 'í', 'Ã¬': 'ì', 'Ã®': 'î', 'Ã¯': 'ï',
