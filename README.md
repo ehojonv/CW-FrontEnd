@@ -31,3 +31,11 @@ Git/GitHub para versionamento
 ├── README.md  # Documentação do projeto
 ├── tailwind.config.ts  # Estilização do projeto
 └── package.json  # Dependências e scripts do projeto
+
+Funcionalidades Implementadas
+✅ Página de Login com validação de credenciais.
+✅ Página de Membros da Equipe com nomes, RM e turma.
+✅ Sistema de Monitoramento de Eventos com detalhes e controles sobre os mesmos.
+✅ Responsividade para desktop, tablet e mobile.
+✅ Componentização seguindo boas práticas.
+✅ Uso do GitHub para versionamento do código
