@@ -1,13 +1,16 @@
-⚠️ CoreWave - Sistema de Controle e Monitoramento
-Este projeto foi desenvolvido como parte da Global Solutions, utilizando Next.js e TypeScript, com estilização em TailwindCSS. Ele inclui funcionalidades como login, geração de eventos e visualização no sistema.
+# ⚠️ CoreWave - Sistema de Controle e Monitoramento
+ 
+Este projeto foi desenvolvido como parte da Global Solutions, utilizando **Next.js** e **TypeScript**, com estilização em **TailwindCSS**. Ele inclui funcionalidades como login, geração de eventos e visualização no sistema.
+ 
+## 🚀 Tecnologias Utilizadas
+- **Next.js** (App Router)
+- **TypeScript**
+- **TailwindCSS**
+- **Git/GitHub** para versionamento
 
-🚀 Tecnologias Utilizadas
-Next.js (App Router)
-TypeScript
-TailwindCSS
-Git/GitHub para versionamento
-
- Estrutura do Projeto
+## 📌 Estrutura do Projeto
+ 
+```
 /
 ├── src/
 │   ├── app/
@@ -31,37 +34,51 @@ Git/GitHub para versionamento
 ├── README.md  # Documentação do projeto
 ├── tailwind.config.ts  # Estilização do projeto
 └── package.json  # Dependências e scripts do projeto
+```
+ 
+## 📢 Funcionalidades Implementadas
+✅ Página de **Login** com validação de credenciais.  
+✅ Página de **Membros da Equipe** com nomes, RM e turma.  
+✅ Sistema de **Monitoramento de Eventos** com detalhes e controles sobre os mesmos.   
+✅ **Responsividade** para desktop, tablet e mobile.  
+✅ **Componentização** seguindo boas práticas.  
+✅ **Uso do GitHub** para versionamento do código.  
+ 
 
-Funcionalidades Implementadas
-✅ Página de Login com validação de credenciais.
-✅ Página de Membros da Equipe com nomes, RM e turma.
-✅ Sistema de Monitoramento de Eventos com detalhes e controles sobre os mesmos.
-✅ Responsividade para desktop, tablet e mobile.
-✅ Componentização seguindo boas práticas.
-✅ Uso do GitHub para versionamento do código
+ ## 🔧 Como Rodar o Projeto
+ 
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/MMChallengeMM/Challenge-FrontEnd
+   ```
+ 
+2. Acesse a pasta do projeto:
+   ```bash
+   cd marmota-mobilidade
+   ```
+ 
+3. Instale as dependências:
+   ```bash
+   npm install
+   ```
+ 
+4. Rode o projeto:
+   ```bash
+   npm run dev
+   ```
+ 
+5. Acesse no navegador: [http://localhost:3000](http://localhost:3000)
+ 
+## 📹 Vídeo de Apresentação
+🎥 O vídeo do projeto pode ser acessado [neste link](https://youtu.be/-D-UW-Wjeiw)
 
-🔧 Como Rodar o Projeto
-Clone o repositório:
 
-git clone https://github.com/MMChallengeMM/Challenge-FrontEnd
-Acesse a pasta do projeto:
-
-cd marmota-mobilidade
-Instale as dependências:
-
-npm install
-Rode o projeto:
-
-npm run dev
-Acesse no navegador: http://localhost:3000
-
-📹 Vídeo de Apresentação
-🎥 O vídeo do projeto pode ser acessado neste link
-
-👥 Membros da Equipe
-Nome	RM	Turma
-João Alves	RM559369	1TDSPB
-Juan Coelho	RM560445	1TDSPB
-Matheus Mariotto	RM560276	1TDSPB
-📜 Licença
+## 👥 Membros da Equipe
+| Nome         | RM       | Turma   |
+|-------------|---------|--------|
+| João Alves  | RM559369 | 1TDSPB |
+| Juan Coelho | RM560445 | 1TDSPB |
+| Matheus Mariotto    | RM560276 | 1TDSPB |
+ 
+## 📜 Licença
 Este projeto foi desenvolvido para fins acadêmicos e segue as diretrizes do curso.
