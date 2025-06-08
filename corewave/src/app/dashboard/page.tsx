@@ -23,7 +23,7 @@ function DashboardContent() {
   const [expandedDescriptions, setExpandedDescriptions] = useState(new Set());
 
   // Função para corrigir acentos
-const fixEncoding = (text) => {
+const fixEncoding = (text: any) => {
   if (!text || typeof text !== 'string') return text;
   
   const encodingMap = {
@@ -51,8 +51,8 @@ const fixEncoding = (text) => {
 
 
   // Função para processar eventos e corrigir encoding
-  const processEventos = (eventosRaw) => {
-    return eventosRaw.map(evento => ({
+  const processEventos = (eventosRaw: any[]) => {
+    return eventosRaw.map((evento: { name: any; place: any; description: any; eventType: any; }) => ({
       ...evento,
       name: fixEncoding(evento.name),
       place: fixEncoding(evento.place),
@@ -62,8 +62,8 @@ const fixEncoding = (text) => {
   };
 
   // Toggle descrição expandida
-  const toggleDescription = (eventId) => {
-    setExpandedDescriptions(prev => {
+  const toggleDescription = (eventId: unknown) => {
+    setExpandedDescriptions((prev: Iterable<unknown> | null | undefined) => {
       const newSet = new Set(prev);
       if (newSet.has(eventId)) {
         newSet.delete(eventId);
@@ -102,12 +102,12 @@ const fixEncoding = (text) => {
       
       if (data && data.data) {
         // Filtrar apenas eventos não deletados e processar encoding
-        const eventosAtivos = processEventos(data.data.filter(evento => !evento.deleted));
+        const eventosAtivos = processEventos(data.data.filter((evento: { deleted: any; }) => !evento.deleted));
         
         setEventos(eventosAtivos);
         
         // Calcular estatísticas
-        const eventosAltaRisco = eventosAtivos.filter(evento => evento.eventRisk === 'alta').length;
+        const eventosAltaRisco = eventosAtivos.filter((evento: { eventRisk: string; }) => evento.eventRisk === 'alta').length;
         
         setStats({
           totalEventos: data.totalItens || eventosAtivos.length,
@@ -134,7 +134,7 @@ const fixEncoding = (text) => {
   };
 
   // Adicionar novo evento
-  const createEvento = async (eventData) => {
+  const createEvento = async (eventData: { nome: any; tipo: string; severidade: any; local: any; descricao: any; }) => {
     try {
       setSubmitting(true);
       setError(null);
@@ -184,7 +184,7 @@ const fixEncoding = (text) => {
   };
 
   // Deletar evento
-  const deleteEvento = async (eventId) => {
+  const deleteEvento = async (eventId: any) => {
     try {
       console.log('Deletando evento:', eventId);
       
@@ -230,7 +230,7 @@ const fixEncoding = (text) => {
     setError(null);
   };
 
-  const handleSubmitEvent = (eventData) => {
+  const handleSubmitEvent = (eventData: any) => {
     createEvento(eventData);
   };
 
@@ -257,9 +257,9 @@ const fixEncoding = (text) => {
       descricao: ''
     });
 
-    const handleInputChange = (e) => {
+    const handleInputChange = (e: { target: { name: any; value: any; }; }) => {
       const { name, value } = e.target;
-      setFormData(prev => ({ ...prev, [name]: value }));
+      setFormData((prev: any) => ({ ...prev, [name]: value }));
     };
 
     const handleSubmit = () => {
@@ -389,7 +389,7 @@ const fixEncoding = (text) => {
   );
 
   // Função para mapear tipos de eventos para ícones/cores
-  const getEventTypeInfo = (eventType) => {
+  const getEventTypeInfo = (eventType: string | number) => {
     const types = {
       enchente: { color: 'bg-blue-100 text-blue-800', icon: '🌊' },
       incendio: { color: 'bg-red-100 text-red-800', icon: '🔥' },
@@ -499,7 +499,7 @@ const fixEncoding = (text) => {
             />
           ) : (
             <div className="space-y-3">
-              {eventos.map((event) => {
+              {eventos.map((event: { eventType: any; id: any; name: any; place: any; eventRisk: string; description: any; }) => {
                 const typeInfo = getEventTypeInfo(event.eventType);
                 const isDescriptionExpanded = expandedDescriptions.has(event.id);
                 
