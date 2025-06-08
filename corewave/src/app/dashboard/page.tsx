@@ -47,4 +47,84 @@ const fixEncoding = (text) => {
   return fixedText;
 };
 
+  const processEventos = (eventosRaw) => {
+    return eventosRaw.map(evento => ({
+      ...evento,
+      name: fixEncoding(evento.name),
+      place: fixEncoding(evento.place),
+      description: fixEncoding(evento.description),
+      eventType: fixEncoding(evento.eventType)
+    }));
+  };
 
+  // Toggle descrição expandida
+  const toggleDescription = (eventId) => {
+    setExpandedDescriptions(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(eventId)) {
+        newSet.delete(eventId);
+      } else {
+        newSet.add(eventId);
+      }
+      return newSet;
+    });
+  };
+
+  // Carregar eventos da API
+  const fetchEventos = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      console.log('Tentando conectar com:', `${API_BASE_URL}/events?page=1&size=50`);
+      
+      const response = await fetch(`${API_BASE_URL}/events?page=1&size=50`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        mode: 'cors',
+      });
+      
+      console.log('Resposta da API:', response.status, response.statusText);
+      
+      if (!response.ok) {
+        throw new Error(`Erro na API: ${response.status} - ${response.statusText}`);
+      }
+      
+      const data = await response.json();
+      console.log('Dados recebidos:', data);
+      
+      if (data && data.data) {
+        // Filtrar apenas eventos não deletados e processar encoding
+        const eventosAtivos = processEventos(data.data.filter(evento => !evento.deleted));
+        
+        setEventos(eventosAtivos);
+        
+        // Calcular estatísticas
+        const eventosAltaRisco = eventosAtivos.filter(evento => evento.eventRisk === 'alta').length;
+        
+        setStats({
+          totalEventos: data.totalItens || eventosAtivos.length,
+          eventosAtivos: eventosAtivos.length,
+          severidadeAlta: eventosAltaRisco,
+        });
+      } else {
+        console.log('Estrutura de dados inesperada:', data);
+        setEventos([]);
+        setStats({ totalEventos: 0, eventosAtivos: 0, severidadeAlta: 0 });
+      }
+    } catch (err) {
+      console.error('Erro detalhado ao carregar eventos:', err);
+      
+      // Verificar se é um erro de rede/CORS
+      if (err.name === 'TypeError' && err.message.includes('fetch')) {
+        setError('Erro de conexão com a API. Verifique se a API está online e as configurações de CORS.');
+      } else {
+        setError(`Erro ao carregar eventos: ${err.message}`);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
