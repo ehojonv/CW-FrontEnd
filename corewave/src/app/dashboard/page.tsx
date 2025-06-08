@@ -210,3 +210,44 @@ const createEvento = async (eventData) => {
       }
     }
   };
+
+  // Carregar dados iniciais
+  useEffect(() => {
+    fetchEventos();
+  }, []);
+
+  const handleAddEvent = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setError(null);
+  };
+
+  const handleSubmitEvent = (eventData) => {
+    createEvento(eventData);
+  };
+
+  const StatCard = ({ icon: Icon, title, value, color, trend }) => (
+    <div className="bg-white rounded-xl p-4 sm:p-6 shadow-lg hover:shadow-xl transition-shadow">
+      <div className="flex items-center justify-between">
+        <div className="min-w-0 flex-1">
+          <p className="text-gray-600 text-xs sm:text-sm font-medium truncate">{title}</p>
+          <p className="text-xl sm:text-2xl font-bold text-gray-800 mt-1">{value}</p>
+        </div>
+        <div className={`p-2 sm:p-3 rounded-full ${color} flex-shrink-0 ml-2`}>
+          <Icon className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
+        </div>
+      </div>
+    </div>
+  );
+
+  const EventModal = () => {
+    const [formData, setFormData] = useState({
+      nome: '',
+      tipo: '',
+      local: '',
+      severidade: 'baixa',
+      descricao: ''
+    });
