@@ -1,6 +1,9 @@
 # ⚠️ CoreWave - Sistema de Controle e Monitoramento
  
 Este projeto foi desenvolvido como parte da Global Solutions, utilizando **Next.js** e **TypeScript**, com estilização em **TailwindCSS**. Ele inclui funcionalidades como login, geração de eventos e visualização no sistema.
+
+# Link para acessar
+Link: [CoreWave](https://cw-front-end-otr8.vercel.app/login)
  
 ## 🚀 Tecnologias Utilizadas
 - **Next.js** (App Router)
