@@ -54,3 +54,14 @@ Rode o projeto:
 
 npm run dev
 Acesse no navegador: http://localhost:3000
+
+📹 Vídeo de Apresentação
+🎥 O vídeo do projeto pode ser acessado neste link
+
+👥 Membros da Equipe
+Nome	RM	Turma
+João Alves	RM559369	1TDSPB
+Juan Coelho	RM560445	1TDSPB
+Matheus Mariotto	RM560276	1TDSPB
+📜 Licença
+Este projeto foi desenvolvido para fins acadêmicos e segue as diretrizes do curso.
