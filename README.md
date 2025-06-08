@@ -39,3 +39,18 @@ Funcionalidades Implementadas
 ✅ Responsividade para desktop, tablet e mobile.
 ✅ Componentização seguindo boas práticas.
 ✅ Uso do GitHub para versionamento do código
+
+🔧 Como Rodar o Projeto
+Clone o repositório:
+
+git clone https://github.com/MMChallengeMM/Challenge-FrontEnd
+Acesse a pasta do projeto:
+
+cd marmota-mobilidade
+Instale as dependências:
+
+npm install
+Rode o projeto:
+
+npm run dev
+Acesse no navegador: http://localhost:3000
