@@ -21,6 +21,7 @@ function DashboardContent() {
   const [error, setError] = useState(null);
   const [expandedDescriptions, setExpandedDescriptions] = useState(new Set());
 
+  // Função para corrigir acentos
 const fixEncoding = (text) => {
   if (!text || typeof text !== 'string') return text;
   
@@ -47,6 +48,8 @@ const fixEncoding = (text) => {
   return fixedText;
 };
 
+
+  // Função para processar eventos e corrigir encoding
   const processEventos = (eventosRaw) => {
     return eventosRaw.map(evento => ({
       ...evento,
@@ -129,7 +132,8 @@ const fixEncoding = (text) => {
     }
   };
 
-const createEvento = async (eventData) => {
+  // Adicionar novo evento
+  const createEvento = async (eventData) => {
     try {
       setSubmitting(true);
       setError(null);
