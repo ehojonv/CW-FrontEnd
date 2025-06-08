@@ -128,3 +128,85 @@ const fixEncoding = (text) => {
       setLoading(false);
     }
   };
+
+const createEvento = async (eventData) => {
+    try {
+      setSubmitting(true);
+      setError(null);
+
+      const payload = {
+        name: eventData.nome,
+        eventType: eventData.tipo.toLowerCase(),
+        eventRisk: eventData.severidade,
+        place: eventData.local,
+        description: eventData.descricao || `Evento de ${eventData.tipo} registrado em ${eventData.local}`,
+      };
+
+      console.log('Enviando evento:', payload);
+
+      const response = await fetch(`${API_BASE_URL}/events`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        mode: 'cors',
+        body: JSON.stringify(payload),
+      });
+
+      console.log('Resposta ao criar evento:', response.status, response.statusText);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Erro detalhado:', errorText);
+        throw new Error(`Erro ao criar evento: ${response.status} - ${response.statusText}`);
+      }
+
+      // Recarregar a lista de eventos
+      await fetchEventos();
+      setShowModal(false);
+      
+    } catch (err) {
+      console.error('Erro ao criar evento:', err);
+      if (err.name === 'TypeError' && err.message.includes('fetch')) {
+        setError('Erro de conexão ao adicionar evento. Verifique sua conexão e tente novamente.');
+      } else {
+        setError(`Erro ao adicionar evento: ${err.message}`);
+      }
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  // Deletar evento
+  const deleteEvento = async (eventId) => {
+    try {
+      console.log('Deletando evento:', eventId);
+      
+      const response = await fetch(`${API_BASE_URL}/events/${eventId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        mode: 'cors',
+      });
+
+      console.log('Resposta ao deletar evento:', response.status, response.statusText);
+
+      if (!response.ok) {
+        throw new Error(`Erro ao deletar evento: ${response.status} - ${response.statusText}`);
+      }
+
+      // Recarregar a lista de eventos
+      await fetchEventos();
+      
+    } catch (err) {
+      console.error('Erro ao deletar evento:', err);
+      if (err.name === 'TypeError' && err.message.includes('fetch')) {
+        setError('Erro de conexão ao deletar evento. Verifique sua conexão e tente novamente.');
+      } else {
+        setError(`Erro ao deletar evento: ${err.message}`);
+      }
+    }
+  };
