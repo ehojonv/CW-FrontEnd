@@ -4,7 +4,11 @@ import React, { useState } from 'react';
 import { Plus, Users } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext'; 
 
-const Header = ({ onAddEvent }) => {
+interface HeaderProps {
+  onAddEvent: () => void;
+}
+
+const Header: React.FC<HeaderProps> = ({ onAddEvent }) => {
   const { logout } = useAuth();
   const [showMenu, setShowMenu] = useState(false);
 

@@ -16,10 +16,19 @@ function DashboardContent() {
   });
 
   const [showModal, setShowModal] = useState(false);
-  const [eventos, setEventos] = useState([]);
+  type Evento = {
+    id?: any;
+    name: any;
+    place: any;
+    description: any;
+    eventType: any;
+    eventRisk?: string;
+    deleted?: boolean;
+  };
+  const [eventos, setEventos] = useState<Evento[]>([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
   const [expandedDescriptions, setExpandedDescriptions] = useState(new Set());
 
   // Função para corrigir acentos
@@ -52,12 +61,14 @@ const fixEncoding = (text: any) => {
 
   // Função para processar eventos e corrigir encoding
   const processEventos = (eventosRaw: any[]) => {
-    return eventosRaw.map((evento: { name: any; place: any; description: any; eventType: any; }) => ({
+    return eventosRaw.map((evento: { name: any; place: any; description: any; eventType: any; eventRisk?: string; deleted?: boolean; }) => ({
       ...evento,
       name: fixEncoding(evento.name),
       place: fixEncoding(evento.place),
       description: fixEncoding(evento.description),
-      eventType: fixEncoding(evento.eventType)
+      eventType: fixEncoding(evento.eventType),
+      eventRisk: evento.eventRisk, // preserva eventRisk
+      deleted: evento.deleted      // preserva deleted
     }));
   };
 
@@ -107,7 +118,7 @@ const fixEncoding = (text: any) => {
         setEventos(eventosAtivos);
         
         // Calcular estatísticas
-        const eventosAltaRisco = eventosAtivos.filter((evento: { eventRisk: string; }) => evento.eventRisk === 'alta').length;
+        const eventosAltaRisco = eventosAtivos.filter((evento: { eventRisk?: string; }) => evento.eventRisk === 'alta').length;
         
         setStats({
           totalEventos: data.totalItens || eventosAtivos.length,
@@ -123,10 +134,19 @@ const fixEncoding = (text: any) => {
       console.error('Erro detalhado ao carregar eventos:', err);
       
       // Verificar se é um erro de rede/CORS
-      if (err.name === 'TypeError' && err.message.includes('fetch')) {
+      if (
+        typeof err === 'object' &&
+        err !== null &&
+        'name' in err &&
+        'message' in err &&
+        typeof (err as any).name === 'string' &&
+        typeof (err as any).message === 'string' &&
+        (err as any).name === 'TypeError' &&
+        (err as any).message.includes('fetch')
+      ) {
         setError('Erro de conexão com a API. Verifique se a API está online e as configurações de CORS.');
       } else {
-        setError(`Erro ao carregar eventos: ${err.message}`);
+        setError(`Erro ao carregar eventos: ${typeof err === 'object' && err !== null && 'message' in err ? (err as any).message : String(err)}`);
       }
     } finally {
       setLoading(false);
@@ -173,10 +193,19 @@ const fixEncoding = (text: any) => {
       
     } catch (err) {
       console.error('Erro ao criar evento:', err);
-      if (err.name === 'TypeError' && err.message.includes('fetch')) {
+      if (
+        typeof err === 'object' &&
+        err !== null &&
+        'name' in err &&
+        'message' in err &&
+        typeof (err as any).name === 'string' &&
+        typeof (err as any).message === 'string' &&
+        (err as any).name === 'TypeError' &&
+        (err as any).message.includes('fetch')
+      ) {
         setError('Erro de conexão ao adicionar evento. Verifique sua conexão e tente novamente.');
       } else {
-        setError(`Erro ao adicionar evento: ${err.message}`);
+        setError(`Erro ao adicionar evento: ${typeof err === 'object' && err !== null && 'message' in err ? (err as any).message : String(err)}`);
       }
     } finally {
       setSubmitting(false);
@@ -208,10 +237,19 @@ const fixEncoding = (text: any) => {
       
     } catch (err) {
       console.error('Erro ao deletar evento:', err);
-      if (err.name === 'TypeError' && err.message.includes('fetch')) {
+      if (
+        typeof err === 'object' &&
+        err !== null &&
+        'name' in err &&
+        'message' in err &&
+        typeof (err as any).name === 'string' &&
+        typeof (err as any).message === 'string' &&
+        (err as any).name === 'TypeError' &&
+        (err as any).message.includes('fetch')
+      ) {
         setError('Erro de conexão ao deletar evento. Verifique sua conexão e tente novamente.');
       } else {
-        setError(`Erro ao deletar evento: ${err.message}`);
+        setError(`Erro ao deletar evento: ${typeof err === 'object' && err !== null && 'message' in err ? (err as any).message : String(err)}`);
       }
     }
   };
@@ -234,7 +272,14 @@ const fixEncoding = (text: any) => {
     createEvento(eventData);
   };
 
-  const StatCard = ({ icon: Icon, title, value, color }) => (
+  type StatCardProps = {
+    icon: React.ComponentType<{ className?: string }>;
+    title: string;
+    value: React.ReactNode;
+    color: string;
+  };
+
+  const StatCard: React.FC<StatCardProps> = ({ icon: Icon, title, value, color }) => (
     <div className="bg-white rounded-xl p-4 sm:p-6 shadow-lg hover:shadow-xl transition-shadow">
       <div className="flex items-center justify-between">
         <div className="min-w-0 flex-1">
@@ -380,7 +425,13 @@ const fixEncoding = (text: any) => {
     );
   };
 
-  const EmptyState = ({ title, description, icon: Icon }) => (
+  type EmptyStateProps = {
+    title: string;
+    description: string;
+    icon: React.ComponentType<{ className?: string }>;
+  };
+
+  const EmptyState: React.FC<EmptyStateProps> = ({ title, description, icon: Icon }) => (
     <div className="flex flex-col items-center justify-center py-8 text-center px-4">
       <Icon className="w-12 h-12 text-gray-300 mb-3" />
       <h3 className="text-base font-medium text-gray-900 mb-2">{title}</h3>
@@ -390,7 +441,7 @@ const fixEncoding = (text: any) => {
 
   // Função para mapear tipos de eventos para ícones/cores
   const getEventTypeInfo = (eventType: string | number) => {
-    const types = {
+    const types: Record<string, { color: string; icon: string }> = {
       enchente: { color: 'bg-blue-100 text-blue-800', icon: '🌊' },
       incendio: { color: 'bg-red-100 text-red-800', icon: '🔥' },
       deslizamento: { color: 'bg-yellow-100 text-yellow-800', icon: '⛰️' },
@@ -398,7 +449,7 @@ const fixEncoding = (text: any) => {
       vendaval: { color: 'bg-gray-100 text-gray-800', icon: '💨' },
       granizo: { color: 'bg-cyan-100 text-cyan-800', icon: '🧊' },
     };
-    return types[eventType] || { color: 'bg-gray-100 text-gray-800', icon: '⚠️' };
+    return types[String(eventType)] || { color: 'bg-gray-100 text-gray-800', icon: '⚠️' };
   };
 
   return (
@@ -499,7 +550,7 @@ const fixEncoding = (text: any) => {
             />
           ) : (
             <div className="space-y-3">
-              {eventos.map((event: { eventType: any; id: any; name: any; place: any; eventRisk: string; description: any; }) => {
+              {eventos.map((event: Evento) => {
                 const typeInfo = getEventTypeInfo(event.eventType);
                 const isDescriptionExpanded = expandedDescriptions.has(event.id);
                 

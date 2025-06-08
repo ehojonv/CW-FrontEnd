@@ -23,7 +23,7 @@ export default function LoginPage() {
     }
   }, [isAuthenticated, router]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     setLoading(true);
     setError('');

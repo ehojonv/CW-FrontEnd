@@ -2,9 +2,18 @@
 
 import { createContext, useContext, useState, useEffect } from 'react';
 
-const AuthContext = createContext();
+interface AuthContextType {
+  isAuthenticated: boolean;
+  loading: boolean;
+  login: (email: string, password: string) => boolean;
+  logout: () => void;
+}
 
-export function AuthProvider({ children }) {
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+import { ReactNode } from 'react';
+
+export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -17,7 +26,7 @@ export function AuthProvider({ children }) {
     setLoading(false);
   }, []);
 
-  const login = (email, password) => {
+  const login = (email: string, password: string) => {
     if (email === 'admin' && password === 'password') {
       localStorage.setItem('corewave_token', 'logged_in');
       setIsAuthenticated(true);
