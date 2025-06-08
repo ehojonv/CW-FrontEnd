@@ -7,6 +7,20 @@ import ProtectedRoute from '../../components/ProtectedRoute';
 
 const API_BASE_URL = 'https://corewaveapi.onrender.com';
 
+function DashboardContent() {
+  const [stats, setStats] = useState({
+    totalEventos: 0,
+    eventosAtivos: 0,
+    severidadeAlta: 0,
+  });
+
+  const [showModal, setShowModal] = useState(false);
+  const [eventos, setEventos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState(null);
+  const [expandedDescriptions, setExpandedDescriptions] = useState(new Set());
+
 const fixEncoding = (text) => {
   if (!text || typeof text !== 'string') return text;
   
@@ -32,3 +46,5 @@ const fixEncoding = (text) => {
 
   return fixedText;
 };
+
+
